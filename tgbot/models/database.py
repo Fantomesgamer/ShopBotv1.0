@@ -28,7 +28,7 @@ async def on_startup():
 
     try:
         async with session.bind.begin() as conn:
-            # await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
     finally:
         await session.close()

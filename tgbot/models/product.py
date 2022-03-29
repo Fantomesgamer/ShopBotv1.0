@@ -1,4 +1,4 @@
-from typing import Set, List
+from typing import List
 
 from sqlalchemy import Column, Integer, Sequence, BigInteger, insert, select, String, delete, update
 from sqlalchemy.orm import Session
@@ -29,6 +29,11 @@ class Product(Base):
     @classmethod
     async def get_product(cls, id: int, session: Session):
         product = (await session.execute(select(Product).where(Product.id == id))).scalar()
+        return product
+
+    @classmethod
+    async def get_product_by_name(cls, name: str, session: Session):
+        product = (await session.execute(select(Product).where(Product.name == name))).scalar()
         return product
 
     @classmethod

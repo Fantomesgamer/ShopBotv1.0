@@ -48,6 +48,9 @@ async def gen_next_builer(stage: CreateStagesNames) -> InlineKeyboardBuilder:
         [[InlineKeyboardButton(text='Назад', callback_data=GotoStage(stage=stage).pack())]])
     return next_markup
 
+"""
+Message handlers
+"""
 
 @router.message(F.text == '/new_product', state='*')
 async def on_new_product(message: Message, state: FSMContext):
@@ -113,7 +116,7 @@ CreateStages = {
 }
 
 """
-CallbackQuery
+CallbackQuery handlers
 """
 
 

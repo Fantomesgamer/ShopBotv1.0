@@ -1,13 +1,10 @@
-from aiogram import Router, types, F
+from aiogram import Router, F
 from aiogram.dispatcher.filters.callback_data import CallbackData
 from aiogram.dispatcher.fsm.context import FSMContext
 from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 router = Router()
-"""
-States
-"""
 
 """
 CallbackData
@@ -21,8 +18,10 @@ class Cancel(CallbackData, prefix='cancel'):
 """
 Keyboards
 """
+
 cancel_button = InlineKeyboardButton(text='Отмена', callback_data=Cancel().pack())
 cancel_markup = InlineKeyboardBuilder([[cancel_button]])
+
 """
 Message Handlers
 """
@@ -43,8 +42,3 @@ CallbackQuery handlers
 async def on_cancel(query: CallbackQuery, state: FSMContext):
     await query.answer('Отменено')
     await state.clear()
-
-
-"""
-Misc
-"""

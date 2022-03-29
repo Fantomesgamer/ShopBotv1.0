@@ -3,7 +3,6 @@ from typing import Callable, Any, Dict, Awaitable
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
 from loguru import logger
-from sqlalchemy.orm import sessionmaker, Session
 
 
 from tgbot.models.user import User
@@ -27,4 +26,3 @@ class AuthorizeMiddleware(BaseMiddleware):
         data['user'] = user
 
         await handler(event, data)
-

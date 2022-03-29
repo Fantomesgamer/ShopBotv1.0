@@ -1,6 +1,3 @@
-# 2QPG19TD
-#
-
 import asyncio
 
 from aiogram.types import BotCommand, BotCommandScope, BotCommandScopeChat
@@ -16,10 +13,13 @@ from tgbot.models.database import router as db_router
 from tgbot.handlers.start import router as start_router
 
 from tgbot.handlers.set_operator import router as set_operator
+from tgbot.handlers.select_operator import router as select_operator
+from tgbot.handlers.connect_operator import router as connect_operator
 from tgbot.handlers.remove_operator import router as remove_operator
 from tgbot.handlers.new_product import router as new_product
+from tgbot.handlers.set_message import router as set_message
+from tgbot.handlers.price_list import router as price_list
 from tgbot.handlers.operators import router as operators
-from tgbot.handlers.shop import router as shop
 from tgbot.handlers.menu import router as menu
 from tgbot.handlers.cancel import router as cancel
 
@@ -60,10 +60,13 @@ async def main():
     dispatcher.include_router(start_router)
     dispatcher.include_router(menu)
     dispatcher.include_router(cancel)
+    dispatcher.include_router(connect_operator)
     dispatcher.include_router(set_operator)
+    dispatcher.include_router(select_operator)
     dispatcher.include_router(remove_operator)
     dispatcher.include_router(new_product)
-    dispatcher.include_router(shop)
+    dispatcher.include_router(set_message)
+    dispatcher.include_router(price_list)
     dispatcher.include_router(operators)
 
 
