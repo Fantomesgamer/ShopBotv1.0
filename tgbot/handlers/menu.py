@@ -67,7 +67,8 @@ async def gen_menu_markup(*args, **kwargs) -> InlineKeyboardMarkup:
                                                                    reason=ConnectReasonsNames.cooperation).pack()))
 
     builder.row(
-        InlineKeyboardButton(text='Связаться с оператором', callback_data=MenuChoice(action=MenuActions.questions).pack()))
+        InlineKeyboardButton(text='Связаться с оператором', callback_data=ConnectOperator(user_id=kwargs.get('user').user_id,
+                                                                   reason=ConnectReasonsNames.questions).pack()))
 
     builder.row(InlineKeyboardButton(text='Сайт', url=await get_message('website')),
                     InlineKeyboardButton(text='Канал', url=await get_message('channel')),

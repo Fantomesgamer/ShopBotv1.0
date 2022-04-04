@@ -11,8 +11,9 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from tgbot.config import load_config
+from tgbot.config import load_config, get_selected_operator
 from tgbot.handlers.cancel import cancel_markup
+from tgbot.handlers.select_operator import OperatorTypes
 from tgbot.handlers.set_message import get_message
 from tgbot.models import User
 
@@ -33,12 +34,14 @@ class ConnectReasonsNames(str, Enum):
     check_payed = 'CHECK_PAYED'
     buy_product = 'BUY_PRODUCT'
     cooperation = 'COOPERATION'
+    questions = 'QUESTIONS'
 
 
 ConnectReasons = {
     ConnectReasonsNames.check_payed: ConnectReason(title='Проверка оплаты', message_title='check_payed'),
     ConnectReasonsNames.buy_product: ConnectReason(title='Оформление заказа', message_title='buy_product'),
-    ConnectReasonsNames.cooperation: ConnectReason(title='Сотрудничествл', message_title='cooperation'),
+    ConnectReasonsNames.cooperation: ConnectReason(title='Сотрудничество', message_title='cooperation'),
+    ConnectReasonsNames.questions: ConnectReason(title='Связаться с оператором', message_title='questions'),
 }
 """
 States
@@ -77,10 +80,10 @@ Message Handlers
 async def enter_connect_comment(message: Message, state: FSMContext, db_session, bot):
     username = message.from_user.username
     reason: ConnectReason = (await state.get_data()).get('reason')
+
     if username:
         url = f't.me/{username}'
-        config = load_config()
-        operator_id = config.tg_bot.selected_operator
+        operator_id = get_selected_operator(OperatorTypes(reason.message_title))
         if operator_id and operator_id != 0:
             try:
                 await bot.send_message(chat_id=operator_id, text='<b>Новое обращеник</b>\n\n'
@@ -110,6 +113,7 @@ async def on_connect_operator(query: CallbackQuery, state: FSMContext, callback_
                               bot: Bot):
     await state.set_state(ConnectStates.enter_connect_comment)
     reason = ConnectReasons.get(callback_data.reason)
+
     await state.update_data(reason=reason)
     await query.message.answer(await get_message(reason.message_title),
                                reply_markup=cancel_markup)
